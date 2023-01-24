@@ -21,10 +21,8 @@ class ResponsiveTester:
     def screenshos(self,url):
         BROWSER_HEIGHT = 1360
         self.browser.get(url)
-        if os.path.exists(f"{os.getcwd()}/screenshots/{url}"):
-            pass
-        else:
-            os.mkdir(f"{os.getcwd()}/screenshots/{url}")
+        if not os.path.exists(f"{os.getcwd()}/screenshots/{url[8:10]}"):
+                os.mkdir(f"{os.getcwd()}/screenshots/{url[8:10]}")
         for size in self.sizes:
             self.browser.set_window_size(size, BROWSER_HEIGHT)
             self.browser.execute_script("window.scrollTo(0,0)")
@@ -33,7 +31,7 @@ class ResponsiveTester:
             total_sections = ceil(scroll_size / BROWSER_HEIGHT)
             for section in range(total_sections + 1):
                 self.browser.execute_script(f"window.scrollTo(0,{(section) * BROWSER_HEIGHT})")
-                self.browser.save_screenshot(f"screenshots/{url}/{size}x{section}.png")
+                self.browser.save_screenshot(f"screenshots/{url[8:10]}/{size}x{section}.png")
                 time.sleep(2)
 
 
@@ -41,5 +39,5 @@ class ResponsiveTester:
         for url in self.urls:
             self.screenshos(url)
 
-tester = ResponsiveTester("https://naver.com")
+tester = ResponsiveTester(["https://google.com", "https://naver.com"])
 tester.start()
